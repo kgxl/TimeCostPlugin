@@ -1,8 +1,6 @@
 package com.example.asmdemo;
 
 
-
-
 /**
  * Created by zjy on 2019-05-05
  * 只是为了方便使用asm生成添加字节码的代码

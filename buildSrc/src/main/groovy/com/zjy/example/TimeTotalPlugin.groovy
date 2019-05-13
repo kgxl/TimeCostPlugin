@@ -75,7 +75,7 @@ public class TimeTotalPlugin extends Transform implements Plugin<Project>{
         }
     }
 
-    void handleFile(File file){
+    private void handleFile(File file){
         def cr=new ClassReader(file.bytes)
         def cw=new ClassWriter(cr,ClassWriter.COMPUTE_MAXS)
         def classVisitor=new MethodTotal(Opcodes.ASM5,cw)

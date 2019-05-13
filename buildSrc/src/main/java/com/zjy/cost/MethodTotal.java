@@ -20,6 +20,7 @@ public class MethodTotal extends ClassVisitor {
 
             @Override
             public AnnotationVisitor visitAnnotation(String s, boolean b) {
+                //自定义的注解用来判断方法上的注解与TimeTotal是否为同一个注解，是否需要统计耗时
                 if (Type.getDescriptor(TimeTotal.class).equals(s)) {
                     inject = true;
                 }
@@ -28,7 +29,9 @@ public class MethodTotal extends ClassVisitor {
 
             @Override
             protected void onMethodEnter() {
+                //方法进入时期
                 if (inject) {
+                    //这里就是之前使用ASM插件生成的统计时间代码
                     mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
                     mv.visitLdcInsn("this is asm input");
                     mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
@@ -50,8 +53,9 @@ public class MethodTotal extends ClassVisitor {
 
             @Override
             protected void onMethodExit(int i) {
+                //方法结束时期
                 if (inject) {
-
+                    //计算方法耗时
                     mv.visitVarInsn(ALOAD, 1);
                     mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "nanoTime", "()J", false);
                     mv.visitMethodInsn(INVOKESTATIC, "com/example/asmdemo/TimeManager", "addEndTime", "(Ljava/lang/String;J)V", false);
